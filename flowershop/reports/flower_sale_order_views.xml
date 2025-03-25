@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_flower_sale_order" model="report.paperformat">
+        <field name="name">Flower Shop Report</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">75</field>
+        <field name="page_width">75</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="disable_shrinking" eval="True"/>
+    </record>
+
+    <template id="report_sale_order_flower_booklet">
+        <t t-call="web.html_container">
+            <t t-set="company" t-value="docs[0].company_id"/>
+            <t t-set="report_header_style" t-value="'display: none;'"/>
+            <t t-set="footer" t-value="'oe_hidden'"/>
+            <t t-call="web.external_layout_boxed">
+                <div class="page text-center" style="page-break-after: always;">
+                    <h1 t-field="company.name"/>
+                </div>
+
+                    <!-- Table Layout -->
+                <t t-foreach="docs" t-as="order">
+                    <t t-foreach="order.order_line" t-as="line">
+                        <t t-if="line.product_id and line.product_id.is_flower and line.product_id.flower_id">
+                            <t t-set="flower" t-value="line.product_id.flower_id"/>
+
+                            <div class="page" style="page-break-before: always; text-align: left;">
+                                <h2>Flower Product</h2>
+
+                                <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+                                    <tr>
+                                        <td style="padding: 5px; border: 1px solid black;">
+                                            <strong>Common Name:</strong> <t t-esc="flower.common_name"/>
+                                        </td>
+                                        <td style="padding: 5px; border: 1px solid black;">
+                                            <strong>Scientific Name:</strong> <t t-esc="flower.scientific_name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px; border: 1px solid black;">
+                                            <strong>Season Start:</strong> <t t-esc="flower.season_start"/>
+                                        </td>
+                                        <td style="padding: 5px; border: 1px solid black;">
+                                            <strong>Season End:</strong> <t t-esc="flower.season_end"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px; border: 1px solid black;">
+                                            <strong>Watering Frequency:</strong> <t t-esc="flower.watering_frequency"/>
+                                        </td>
+                                        <td style="padding: 5px; border: 1px solid black;">
+                                            <strong>Watering Amount (ml):</strong> <t t-esc="flower.watering_amount"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_flowershop" model="ir.actions.report">
+        <field name="name">Flower Shop Orders</field>
+        <field name="model">sale.order</field>
+        <field name="report_name">flowershop.report_sale_order_flower_booklet</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_flower_sale_order"/>
+    </record>
+</odoo>

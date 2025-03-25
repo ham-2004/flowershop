@@ -1,0 +1,49 @@
+<odoo>
+    <record id="product_template_common_form_inherit" model="ir.ui.view">
+        <field name="name">product.template.common.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_tag_ids']" position="after">
+                <field name="flower_id" string="Flower"/>
+                <field name="sequence_id"/>
+                <field name="gardener_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.form.view.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//widget[@name='web_ribbon']" position="after">
+                <widget name="needs_watering" title="NEEDS WATERING" bg_color="text-bg-danger" invisible="active"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_order_line_inherit_flower" model="ir.ui.view">
+        <field name="name">sale.order.line.inherit.flower</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+                <attribute name="domain">[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=',
+                    parent.company_id), ('is_flower', '=', True)]
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_product_product" model="ir.actions.act_window">
+        <field name="name">Flower Products</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="context" eval="{'default_is_flower': True}"/>
+        <field name="domain" eval="[('is_flower', '=', True)]"/>
+    </record>
+
+    <menuitem id="menu_product_product" action="action_product_product" parent="sale.product_menu_catalog"
+              sequence="15"/>
+</odoo>

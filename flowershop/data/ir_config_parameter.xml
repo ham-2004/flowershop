@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="ir_config_parameter_warehouse_api_key" model="ir.config_parameter">
+        <field name="key">flowershop.weather_api_key</field>
+        <field name="value">unset</field>
+    </record>
+</odoo>

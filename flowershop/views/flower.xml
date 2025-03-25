@@ -1,0 +1,54 @@
+<odoo>
+    <record id="flower_template_form_view" model="ir.ui.view">
+        <field name="name">flower.template.form</field>
+        <field name="model">flower.flower</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <form string="Flower">
+<!--                <header>-->
+<!--                    <button string="Print Labels" type="object" name="action_open_label_layout" invisible="detailed_type not in ['consu', 'product', 'combo']"/>-->
+<!--                </header>-->
+                <sheet>
+                    <group string="Name">
+                      <field name="common_name" string="Common"/>
+                      <field name="scientific_name" string="Scientific"/>
+                    </group>
+                    <group string="Season">
+                      <field name="season_start" string="Start"/>
+                      <field name="season_end" string="End"/>
+                    </group>
+                    <group string="Water">
+                      <field name="watering_frequency" string="Frequency"/>
+                      <field name="watering_amount" string="Amount"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="flower_template_tree_view">
+      <field name="name">flower.template.tree</field>
+      <field name="model">flower.flower</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="common_name" string="Common Name"/>
+          <field name="scientific_name" string="Scientific Name"/>
+          <field name="season_start" string="Start"/>
+          <field name="season_end" string="Season End"/>
+          <field name="watering_frequency" string="Water Frequency"/>
+          <field name="watering_amount" string="Water Amount"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="flower_shop_action" model="ir.actions.act_window">
+      <field name="name">Flower Shop</field>
+      <field name="res_model">flower.flower</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_flower_shop"
+              name="Flower Shop"
+              action="flower_shop_action"
+              web_icon="flowershop,static/description/icon.png"/>
+</odoo>
